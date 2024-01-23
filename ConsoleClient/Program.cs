@@ -6,12 +6,6 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
-            var dreieck = new Dreieck();
-
-            AssertDreieck(1,1,1,DreieckTyp.Gleichseitiges);
-            AssertDreieck(1,2,1,DreieckTyp.Gleichschenklig);
-            AssertDreieck(3,2,1,DreieckTyp.Normal);
-            AssertDreieck(0,1,2, DreieckTyp.Error);
         }
 
         static void AssertDreieck(int a, int b, int c, DreieckTyp expected)
@@ -42,6 +36,22 @@ namespace ConsoleClient
     {
         public DreieckTyp GetTyp(int a, int b, int c)
         {
+            var sidesOrderedDesc = new[] { a, b, c }.Order().ToArray();
+            var minSide1 = sidesOrderedDesc[0];
+            var minSide2 = sidesOrderedDesc[1];
+            var maxSide = sidesOrderedDesc[2];
+
+            var isNotConstructable = minSide1 + (long)minSide2 <= maxSide;
+            if (isNotConstructable)
+            {
+                return DreieckTyp.Error;
+            }
+
+            if (a <= 0 || b <= 0 || c <= 0)
+            {
+                return DreieckTyp.Error;
+            }
+
             if (a == b && b == c && c == a)
             {
                 return DreieckTyp.Gleichseitiges;
